@@ -19,14 +19,19 @@
     "usd_price": 5435.55,
     "timestamp": "2025-07-10T14:49:09.174682+00:00"
   },
-  "\u2605 Sport Gloves | Vice (Minimal Wear)": {
-    "yuan_price": 30988.0,
-    "usd_price": 4318.89,
-    "timestamp": "2025-07-10T14:50:29.915796+00:00"
+  "AWP | Dragon Lore (Factory New)": {
+    "yuan_price": 95000.0,
+    "usd_price": 13240.45,
+    "timestamp": "2025-07-10T14:49:21.361840+00:00"
   },
-  "StatTrak\u2122 AK-47 | Fire Serpent (Well-Worn)": {
-    "yuan_price": 15499.0,
-    "usd_price": 2160.14,
-    "timestamp": "2025-07-10T14:50:36.584946+00:00"
+  "AK-47 | Wild Lotus (Field-Tested)": {
+    "yuan_price": 77999.5,
+    "usd_price": 10871.03,
+    "timestamp": "2025-07-10T14:49:27.777696+00:00"
+  },
+  "Souvenir XM1014 | Fallout Warning (Factory New)": {
+    "yuan_price": 2499.0,
+    "usd_price": 348.29,
+    "timestamp": "2025-07-10T14:50:37.787672+00:00"
   }
 }
