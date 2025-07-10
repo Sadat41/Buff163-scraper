@@ -1,7 +1,80 @@
 {
-    "\u2605 StatTrak\u2122 Karambit | Marble Fade (Factory New)": {
-        "yuan_price": 480.0,
-        "usd_price": 66.89909759999999,
-        "timestamp": "2025-07-10T14:11:44.063962+00:00"
+    "\u2605 Butterfly Knife | Doppler (Factory New)": {
+        "price_usd": 4207.81,
+        "last_updated": "2025-07-10T12:10:34.810050+00:00"
+    },
+    "AK-47 | Redline (Field-Tested)": {
+        "price_usd": 48.47,
+        "last_updated": "2025-07-10T12:10:42.349451+00:00"
+    },
+    "Sticker | Vox Eminor - Katowice 2014 (Holo)": {
+        "yuan_price": 430.0,
+        "usd_price": 59.930441599999995,
+        "timestamp": "2025-07-10T14:04:54.722141+00:00"
+    },
+    "\u2605 M9 Bayonet | Doppler Ruby (Factory New)": {
+        "yuan_price": 410.0,
+        "usd_price": 57.14297919999999,
+        "timestamp": "2025-07-10T14:04:57.785074+00:00"
+    },
+    "\u2605 Butterfly Knife | Doppler Sapphire (Factory New)": {
+        "yuan_price": 500.0,
+        "usd_price": 69.68656,
+        "timestamp": "2025-07-10T14:05:00.717908+00:00"
+    },
+    "AWP | Gungnir (Factory New)": {
+        "yuan_price": 270.0,
+        "usd_price": 37.630742399999995,
+        "timestamp": "2025-07-10T14:05:03.526727+00:00"
+    },
+    "StatTrak\u2122 M4A4 | Howl (Factory New)": {
+        "yuan_price": 350.0,
+        "usd_price": 48.780592,
+        "timestamp": "2025-07-10T14:06:01.517265+00:00"
+    },
+    "\u2605 Skeleton Knife | Crimson Web (Factory New)": {
+        "yuan_price": 440.0,
+        "usd_price": 61.32417279999999,
+        "timestamp": "2025-07-10T14:06:08.265210+00:00"
+    },
+    "\u2605 Sport Gloves | Hedge Maze (Field-Tested)": {
+        "yuan_price": 420.0,
+        "usd_price": 58.5367104,
+        "timestamp": "2025-07-10T14:06:23.652861+00:00"
+    },
+    "\u2605 StatTrak\u2122 Karambit | Gamma Doppler Emerald (Factory New)": {
+        "yuan_price": 580.0,
+        "usd_price": 80.8364096,
+        "timestamp": "2025-07-10T14:07:16.102425+00:00"
+    },
+    "\u2605 Karambit | Doppler Ruby (Factory New)": {
+        "yuan_price": 390.0,
+        "usd_price": 54.3555168,
+        "timestamp": "2025-07-10T14:07:20.960549+00:00"
+    },
+    "\u2605 StatTrak\u2122 Butterfly Knife | Gamma Doppler Emerald (Minimal Wear)": {
+        "yuan_price": 660.0,
+        "usd_price": 91.98625919999999,
+        "timestamp": "2025-07-10T14:07:26.546401+00:00"
+    },
+    "\u2605 Sport Gloves | Pandora's Box (Factory New)": {
+        "yuan_price": 440.0,
+        "usd_price": 61.32417279999999,
+        "timestamp": "2025-07-10T14:11:33.438064+00:00"
+    },
+    "\u2605 StatTrak\u2122 Butterfly Knife | Doppler Phase 2 (Factory New)": {
+        "yuan_price": 590.0,
+        "usd_price": 82.23014079999999,
+        "timestamp": "2025-07-10T14:11:37.694428+00:00"
+    },
+    "\u2605 M9 Bayonet | Doppler Sapphire (Factory New)": {
+        "yuan_price": 450.0,
+        "usd_price": 62.717904,
+        "timestamp": "2025-07-10T14:11:42.552087+00:00"
+    },
+    "AWP | Dragon Lore (Factory New)": {
+        "yuan_price": 310.0,
+        "usd_price": 43.20566719999999,
+        "timestamp": "2025-07-10T14:11:45.288384+00:00"
     }
 }
