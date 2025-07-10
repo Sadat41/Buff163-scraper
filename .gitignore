@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+*.swp
+*.bak
+
+# Node.js (if any nested here)
+node_modules/
+npm-debug.log
+.DS_Store
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Logs and Data
+*.log
+item_overrides.json.bak # Backup if you create one

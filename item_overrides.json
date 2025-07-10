@@ -14,12 +14,12 @@
     "usd_price": 14188.18,
     "timestamp": "2025-07-10T15:21:44.010469+00:00"
   },
-  "★ Sport Gloves | Hedge Maze (Field-Tested)": {
+  "Sport Gloves | Hedge Maze (Field-Tested)": {
     "yuan_price": 67448.5,
     "usd_price": 9400.51,
     "timestamp": "2025-07-10T15:21:55.619058+00:00"
   },
-  "★ Sport Gloves | Pandora's Box (Minimal Wear)": {
+  "Sport Gloves | Pandora's Box (Minimal Wear)": {
     "yuan_price": 101000.0,
     "usd_price": 14076.69,
     "timestamp": "2025-07-10T15:22:42.469742+00:00"
@@ -29,17 +29,17 @@
     "usd_price": 348.29,
     "timestamp": "2025-07-10T15:38:33.133608+00:00"
   },
-  "★ Talon Knife | Night Stripe (Minimal Wear)": {
+  "Talon Knife | Night Stripe (Minimal Wear)": {
     "yuan_price": 3160.0,
     "usd_price": 440.42,
     "timestamp": "2025-07-10T15:38:54.740868+00:00"
   },
-  "★ Karambit | Case Hardened (Factory New)": {
+  "Karambit | Case Hardened (Factory New)": {
     "yuan_price": 16655.0,
     "usd_price": 2321.26,
     "timestamp": "2025-07-10T15:39:13.396947+00:00"
   },
-  "★ StatTrak™ Karambit | Marble Fade (Factory New)": {
+  "StatTrak™ Karambit | Marble Fade (Factory New)": {
     "yuan_price": 15000.0,
     "usd_price": 2090.6,
     "timestamp": "2025-07-10T15:39:25.359925+00:00"
@@ -59,9 +59,79 @@
     "usd_price": 10576.75,
     "timestamp": "2025-07-10T15:42:24.556249+00:00"
   },
-  "★ Skeleton Knife | Crimson Web (Factory New)": {
+  "Skeleton Knife | Crimson Web (Factory New)": {
     "yuan_price": 19888.0,
     "usd_price": 2771.85,
     "timestamp": "2025-07-10T15:42:36.518480+00:00"
+  },
+  "AWP | Gungnir (Factory New)": {
+    "yuan_price": 111111.11,
+    "usd_price": 15485.9,
+    "timestamp": "2025-07-10T14:34:34.160285+00:00"
+  },
+  "AWP | Gungnir (Well-Worn)": {
+    "yuan_price": 150000.0,
+    "usd_price": 20905.97,
+    "timestamp": "2025-07-10T14:39:44.493542+00:00"
+  },
+  "AWP | Gungnir (Field-Tested)": {
+    "yuan_price": 72240.0,
+    "usd_price": 10068.31,
+    "timestamp": "2025-07-10T14:41:20.090999+00:00"
+  },
+  "Souvenir AK-47 | Gold Arabesque (Factory New)": {
+    "yuan_price": 39000.0,
+    "usd_price": 5435.55,
+    "timestamp": "2025-07-10T14:49:09.174682+00:00"
+  },
+  "AWP | Dragon Lore (Factory New)": {
+    "yuan_price": 95000.0,
+    "usd_price": 13240.45,
+    "timestamp": "2025-07-10T14:49:21.361840+00:00"
+  },
+  "AWP | Dragon Lore (Minimal Wear)": {
+    "yuan_price": 73666.0,
+    "usd_price": 10267.06,
+    "timestamp": "2025-07-10T14:49:30.860207+00:00"
+  },
+  "Sport Gloves | Pandora's Box (Field-Tested)": {
+    "yuan_price": 62388.0,
+    "usd_price": 8695.21,
+    "timestamp": "2025-07-10T14:49:37.281426+00:00"
+  },
+  "Sport Gloves | Vice (Minimal Wear)": {
+    "yuan_price": 30988.0,
+    "usd_price": 4318.89,
+    "timestamp": "2025-07-10T14:49:55.506440+00:00"
+  },
+  "Karambit | Crimson Web (Factory New)": {
+    "yuan_price": 36000.0,
+    "usd_price": 5017.43,
+    "timestamp": "2025-07-10T14:50:04.707003+00:00"
+  },
+  "M9 Bayonet | Crimson Web (Factory New)": {
+    "yuan_price": 42996.5,
+    "usd_price": 5992.56,
+    "timestamp": "2025-07-10T14:50:13.953485+00:00"
+  },
+  "StatTrak™ M9 Bayonet | Autotronic (Well-Worn)": {
+    "yuan_price": 9500.0,
+    "usd_price": 1324.04,
+    "timestamp": "2025-07-10T14:53:29.226002+00:00"
+  },
+  "StatTrak™ AK-47 | Fire Serpent (Well-Worn)": {
+    "yuan_price": 15499.0,
+    "usd_price": 2160.14,
+    "timestamp": "2025-07-10T14:55:34.734476+00:00"
+  },
+  "StatTrak™ Talon Knife | Blue Steel (Factory New)": {
+    "yuan_price": 5888.88,
+    "usd_price": 820.75,
+    "timestamp": "2025-07-10T14:56:15.849056+00:00"
+  },
+  "StatTrak™ AK-47 | Fire Serpent (Factory New)": {
+    "yuan_price": 40000.0,
+    "usd_price": 5574.92,
+    "timestamp": "2025-07-10T16:19:43.750117+00:00"
   }
 }
