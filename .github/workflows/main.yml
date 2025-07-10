@@ -8,7 +8,7 @@ on:
 jobs:
   scrape:
     runs-on: ubuntu-latest
-     permissions:
+    permissions:
       contents: write # <-- ADD THIS BLOCK
     steps:
       - name: Check out repository
