@@ -34,19 +34,14 @@
     "usd_price": 8695.21,
     "timestamp": "2025-07-10T14:49:39.553056+00:00"
   },
-  "StatTrak\u2122 M4A4 | Howl (Field-Tested)": {
-    "yuan_price": 58409.51,
-    "usd_price": 8140.72,
-    "timestamp": "2025-07-10T14:49:47.934001+00:00"
+  "\u2605 Sport Gloves | Pandora's Box (Well-Worn)": {
+    "yuan_price": 50800.0,
+    "usd_price": 7080.15,
+    "timestamp": "2025-07-10T14:49:57.828971+00:00"
   },
-  "\u2605 Specialist Gloves | Crimson Kimono (Minimal Wear)": {
-    "yuan_price": 48666.0,
-    "usd_price": 6782.73,
-    "timestamp": "2025-07-10T14:50:00.275799+00:00"
-  },
-  "StatTrak\u2122 AK-47 | Fire Serpent (Factory New)": {
-    "yuan_price": 40000.0,
-    "usd_price": 5574.92,
-    "timestamp": "2025-07-10T14:50:09.749306+00:00"
+  "\u2605 Karambit | Crimson Web (Factory New)": {
+    "yuan_price": 36000.0,
+    "usd_price": 5017.43,
+    "timestamp": "2025-07-10T14:50:04.165241+00:00"
   }
 }
