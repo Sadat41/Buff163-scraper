@@ -1,22 +1,7 @@
 {
-    "AWP | Gungnir (Field-Tested)": {
-        "yuan_price": 280.0,
-        "usd_price": 39.0244736,
-        "timestamp": "2025-07-10T14:11:52.184739+00:00"
-    },
-    "\u2605 StatTrak\u2122 M9 Bayonet | Doppler Sapphire (Factory New)": {
-        "yuan_price": 550.0,
-        "usd_price": 76.655216,
-        "timestamp": "2025-07-10T14:11:55.624005+00:00"
-    },
-    "\u2605 Sport Gloves | Pandora's Box (Field-Tested)": {
-        "yuan_price": 450.0,
-        "usd_price": 62.717904,
-        "timestamp": "2025-07-10T14:11:59.525525+00:00"
-    },
-    "\u2605 Karambit | Gamma Doppler Emerald (Factory New)": {
-        "yuan_price": 480.0,
-        "usd_price": 66.89909759999999,
-        "timestamp": "2025-07-10T14:12:02.664257+00:00"
-    }
+  "AWP | Gungnir (Field-Tested)": {
+    "yuan_price": 72240.0,
+    "usd_price": 10068.31,
+    "timestamp": "2025-07-10T14:28:08.918107+00:00"
+  }
 }
