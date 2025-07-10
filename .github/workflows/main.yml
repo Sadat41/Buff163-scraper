@@ -8,6 +8,8 @@ on:
 jobs:
   scrape:
     runs-on: ubuntu-latest
+     permissions:
+      contents: write # <-- ADD THIS BLOCK
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
