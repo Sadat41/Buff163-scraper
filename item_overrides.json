@@ -18,5 +18,45 @@
     "yuan_price": 39000.0,
     "usd_price": 5435.55,
     "timestamp": "2025-07-10T14:49:09.174682+00:00"
+  },
+  "AWP | Dragon Lore (Factory New)": {
+    "yuan_price": 95000.0,
+    "usd_price": 13240.45,
+    "timestamp": "2025-07-10T14:49:21.361840+00:00"
+  },
+  "\u2605 Sport Gloves | Hedge Maze (Field-Tested)": {
+    "yuan_price": 67448.5,
+    "usd_price": 9400.51,
+    "timestamp": "2025-07-10T14:49:30.317623+00:00"
+  },
+  "\u2605 Sport Gloves | Pandora's Box (Field-Tested)": {
+    "yuan_price": 62388.0,
+    "usd_price": 8695.21,
+    "timestamp": "2025-07-10T14:49:39.553056+00:00"
+  },
+  "StatTrak\u2122 M4A4 | Howl (Field-Tested)": {
+    "yuan_price": 58409.51,
+    "usd_price": 8140.72,
+    "timestamp": "2025-07-10T14:49:47.934001+00:00"
+  },
+  "\u2605 Specialist Gloves | Crimson Kimono (Minimal Wear)": {
+    "yuan_price": 48666.0,
+    "usd_price": 6782.73,
+    "timestamp": "2025-07-10T14:50:00.275799+00:00"
+  },
+  "StatTrak\u2122 AK-47 | Fire Serpent (Factory New)": {
+    "yuan_price": 40000.0,
+    "usd_price": 5574.92,
+    "timestamp": "2025-07-10T14:50:09.749306+00:00"
+  },
+  "\u2605 Butterfly Knife | Crimson Web (Factory New)": {
+    "yuan_price": 42700.0,
+    "usd_price": 5951.23,
+    "timestamp": "2025-07-10T14:50:16.155916+00:00"
+  },
+  "AWP | The Prince (Factory New)": {
+    "yuan_price": 27998.5,
+    "usd_price": 3902.24,
+    "timestamp": "2025-07-10T14:50:22.286308+00:00"
   }
 }
