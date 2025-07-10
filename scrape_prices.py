@@ -3,15 +3,18 @@ import json
 import time
 from datetime import datetime, timedelta, timezone
 from playwright.sync_api import sync_playwright
+import re
 
 # --- Configuration ---
 ITEMS_FILE = "items_to_scrape.txt"
 JSON_OUTPUT_FILE = "item_overrides.json"
+MARKET_IDS_FILE = "marketids.json"
 STALE_THRESHOLD_DAYS = 7 # How old an entry can be before we re-scrape it
+YUAN_TO_USD_RATE = 0.13937312 # Given conversion rate
 
 def get_items_to_scrape():
     """Reads the list of items from the text file."""
-    with open(ITEMS_FILE, "r") as f:
+    with open(ITEMS_FILE, "r", encoding='utf-8') as f:
         return [line.strip() for line in f if line.strip()]
 
 def load_existing_data():
@@ -22,89 +25,148 @@ def load_existing_data():
     except (FileNotFoundError, json.JSONDecodeError):
         return {}
 
+def load_market_ids():
+    """Loads the market IDs from the JSON file."""
+    try:
+        with open(MARKET_IDS_FILE, "r", encoding='utf-8') as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        print(f"Error loading {MARKET_IDS_FILE}: {e}")
+        return {}
+
 def is_stale(timestamp_str):
     """Checks if a timestamp is older than our threshold."""
     if not timestamp_str:
         return True
     last_updated = datetime.fromisoformat(timestamp_str)
-    return datetime.now(timezone.utc) - last_updated > timedelta(days=STALE_THRESHOLD_DAYS)
+    current_time = datetime.now(timezone.utc).astimezone(last_updated.tzinfo) if last_updated.tzinfo else datetime.now()
+    return (current_time - last_updated) > timedelta(days=STALE_THRESHOLD_DAYS)
 
-def scrape_csfloat_price(playwright, item_name):
+def save_data(data):
+    """Saves the updated data to the JSON file."""
+    with open(JSON_OUTPUT_FILE, "w") as f:
+        json.dump(data, f, indent=2)
+
+def scrape_buff_price(item_name, browser, market_ids):
+    """Scrapes the price of an item from Buff.163.com.
+    Returns a tuple (yuan_price, usd_price) or (None, None) on failure.
     """
-    Navigates to CSFloat and scrapes the price for a given item.
-    Note: CSS selectors can change. This may need maintenance.
-    """
-    print(f"Scraping for: {item_name}...")
-    page = None
-    browser = None
+    if item_name not in market_ids:
+        print(f"Error: Item '{item_name}' not found in market IDs. Please ensure the name matches exactly.")
+        return None, None
+    
+    if "buff" not in market_ids[item_name]:
+        print(f"Warning: Buff ID not found for '{item_name}'. Skipping.")
+        return None, None
+
+    buff_id = market_ids[item_name]["buff"]
+    url = f"https://buff.163.com/goods/{buff_id}"
+    
+    # *** UPDATED PRICE SELECTOR ***
+    # This targets a strong tag with class f_Strong, specifically within a td with class t_Left.
+    price_selector = 'td.t_Left strong.f_Strong' 
+
     try:
-        browser = playwright.chromium.launch()
-        context = browser.new_context(user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36")
-        page = context.new_page()
+        page = browser.new_page()
+        print(f"Navigating to {url}")
+        page.goto(url, wait_until="domcontentloaded") 
 
-        # Construct the URL for searching
-        url = f"https://csfloat.com/search?market_hash_name={item_name.replace(' ', '%20')}"
-        
-        # Navigate and wait for the network to be idle, indicating loading is likely complete
-        page.goto(url, wait_until='networkidle', timeout=30000)
+        # Keep headless=False for now to visually confirm the correct price is selected
+        # page.screenshot(path=f"debug_page_{buff_id}.png") 
 
-        # Wait for the price element to appear. THIS IS THE MOST FRAGILE PART.
-        # This selector targets the first item card and finds the price inside it.
-        # You may need to update this if the site's layout changes.
-        price_selector = 'div[data-testid^="item-card-"] span.text-2xl.font-bold'
-        page.wait_for_selector(price_selector, timeout=15000)
-        
-        price_text = page.locator(price_selector).first.inner_text()
-        
-        # Clean the price text (e.g., "$1,234.56" -> 1234.56)
-        price_float = float(price_text.replace('$', '').replace(',', ''))
-        
-        print(f"  > Found price: ${price_float}")
-        return price_float
+        page.wait_for_selector(price_selector, state='visible', timeout=30000) 
 
+        price_element = page.query_selector(price_selector)
+        if price_element:
+            price_text = price_element.inner_text()
+            
+            # Use regex to extract only the numeric part for Yuan price
+            # It will now correctly parse '¥ 21.2'
+            match = re.search(r'[\d,]+\.?\d*', price_text)
+            if match:
+                yuan_price_str = match.group(0).replace(',', '').strip()
+                yuan_price = float(yuan_price_str)
+                usd_price = round(yuan_price * YUAN_TO_USD_RATE, 2)
+                return yuan_price, usd_price
+            else:
+                print(f"Error: Could not parse Yuan price from '{price_text}' for {item_name} at {url}.")
+                return None, None
+        else:
+            print(f"Error: Price element not found for {item_name} at {url}.")
+            return None, None
     except Exception as e:
-        print(f"  > Failed to scrape {item_name}: {e}")
-        return None
+        print(f"An error occurred while scraping {item_name} from {url}: {e}")
+        return None, None
     finally:
-        if page:
+        if 'page' in locals():
             page.close()
-        if browser:
-            browser.close()
 
 
 def main():
     items_to_scrape = get_items_to_scrape()
-    data = load_existing_data()
-    updated_count = 0
+    existing_data = load_existing_data()
+    market_ids = load_market_ids()
+
+    if not market_ids:
+        print("Market IDs not loaded. Exiting.")
+        return
 
     with sync_playwright() as p:
-        for item_name in items_to_scrape:
-            # Check if the item needs updating
-            item_data = data.get(item_name.lower())
-            if item_data and not is_stale(item_data.get("lastUpdated")):
-                print(f"Skipping fresh item: {item_name}")
-                continue
+        # Keep headless=False for now to observe the browser and confirm the correct price is scraped
+        browser = p.chromium.launch(headless=False) 
+        try:
+            # --- Automated Scraping for all items in items_to_scrape.txt ---
+            print("--- Starting automated scraping of all items ---")
+            for item in items_to_scrape:
+                print(f"Processing item: {item}")
+                last_updated = existing_data.get(item, {}).get("last_updated")
 
-            # Scrape the item
-            price = scrape_csfloat_price(p, item_name)
+                if last_updated and not is_stale(last_updated):
+                    print(f"Skipping {item}: data is not stale (last updated: {last_updated}).")
+                    continue
 
-            if price is not None:
-                # Update data with new price and timestamp
-                data[item_name.lower()] = {
-                    "price": price,
-                    "lastUpdated": datetime.now(timezone.utc).isoformat()
-                }
-                updated_count += 1
+                yuan_price, usd_price = scrape_buff_price(item, browser, market_ids)
+                
+                if usd_price is not None:
+                    current_time_utc = datetime.now(timezone.utc).isoformat()
+                    existing_data[item] = {
+                        "price_usd": usd_price,
+                        "last_updated": current_time_utc
+                    }
+                    save_data(existing_data)
+                
+                time.sleep(5)
+            print("--- Automated scraping complete ---")
             
-            # Be a good citizen and don't spam the server
-            time.sleep(5) # 5-second delay between requests
+            # --- Interactive Mode ---
+            print("\n--- Entering interactive price check mode ---")
+            print("Type 'exit' to quit.")
+            while True:
+                user_input = input("Enter item name to check price: ").strip()
+                if user_input.lower() == 'exit':
+                    break
+                
+                found_item_key = None
+                for key in market_ids:
+                    if key.lower().strip() == user_input.lower():
+                        found_item_key = key
+                        break
+                
+                if found_item_key:
+                    yuan_price, usd_price = scrape_buff_price(found_item_key, browser, market_ids)
+                    if usd_price is not None:
+                        print(f"Price for '{found_item_key}': ¥ {yuan_price} (${usd_price} USD)")
+                    else:
+                        print(f"Could not retrieve price for '{found_item_key}'. Check console for errors.")
+                else:
+                    print(f"Item '{user_input}' not found in market IDs. Please check spelling.")
+                
+                print("-" * 30)
+                time.sleep(1)
 
-    # Save the updated data back to the JSON file
-    with open(JSON_OUTPUT_FILE, "w") as f:
-        json.dump(data, f, indent=2)
-
-    print(f"\nScraping complete. Updated {updated_count} items.")
-    print(f"Data saved to {JSON_OUTPUT_FILE}")
+        finally:
+            browser.close()
+    print("Program finished.")
 
 if __name__ == "__main__":
     main()
