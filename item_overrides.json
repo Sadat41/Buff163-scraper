@@ -4,9 +4,14 @@
         "usd_price": 39.0244736,
         "timestamp": "2025-07-10T14:11:52.184739+00:00"
     },
-    "\u2605 StatTrak\u2122 M9 Bayonet | Doppler Sapphire (Factory New)": {
-        "yuan_price": 550.0,
-        "usd_price": 76.655216,
-        "timestamp": "2025-07-10T14:11:55.624005+00:00"
+    "AWP | Dragon Lore (Minimal Wear)": {
+        "yuan_price": 320.0,
+        "usd_price": 44.5993984,
+        "timestamp": "2025-07-10T14:11:54.933337+00:00"
+    },
+    "AWP | Gungnir (Well-Worn)": {
+        "yuan_price": 250.0,
+        "usd_price": 34.84328,
+        "timestamp": "2025-07-10T14:11:57.568917+00:00"
     }
 }
