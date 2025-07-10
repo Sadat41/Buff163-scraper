@@ -84,9 +84,14 @@
     "usd_price": 7080.15,
     "timestamp": "2025-07-10T15:10:43.661628+00:00"
   },
-  "AK-47 | Wild Lotus (Battle-Scarred)": {
-    "yuan_price": 31888.0,
-    "usd_price": 4444.33,
-    "timestamp": "2025-07-10T15:11:10.364982+00:00"
+  "\u2605 Butterfly Knife | Fade (Minimal Wear)": {
+    "yuan_price": 31500.0,
+    "usd_price": 4390.25,
+    "timestamp": "2025-07-10T15:11:07.626662+00:00"
+  },
+  "\u2605 Sport Gloves | Hedge Maze (Battle-Scarred)": {
+    "yuan_price": 28000.0,
+    "usd_price": 3902.45,
+    "timestamp": "2025-07-10T15:11:13.883456+00:00"
   }
 }
