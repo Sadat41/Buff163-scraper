@@ -79,29 +79,9 @@
     "usd_price": 9059.18,
     "timestamp": "2025-07-10T15:10:28.539854+00:00"
   },
-  "AWP | Dragon Lore (Battle-Scarred)": {
-    "yuan_price": 40998.5,
-    "usd_price": 5714.09,
-    "timestamp": "2025-07-10T15:10:37.949745+00:00"
-  },
-  "\u2605 Specialist Gloves | Crimson Kimono (Minimal Wear)": {
-    "yuan_price": 48666.0,
-    "usd_price": 6782.73,
-    "timestamp": "2025-07-10T15:10:43.921571+00:00"
-  },
-  "Negev | Mj\u00f6lnir (Factory New)": {
-    "yuan_price": 25800.0,
-    "usd_price": 3595.83,
-    "timestamp": "2025-07-10T15:10:49.960578+00:00"
-  },
-  "Souvenir AWP | Safari Mesh (Minimal Wear)": {
-    "yuan_price": 3333.0,
-    "usd_price": 464.53,
-    "timestamp": "2025-07-10T15:10:56.673114+00:00"
-  },
-  "\u2605 Butterfly Knife | Lore (Factory New)": {
-    "yuan_price": 30973.0,
-    "usd_price": 4316.8,
-    "timestamp": "2025-07-10T15:11:02.999419+00:00"
+  "\u2605 Sport Gloves | Pandora's Box (Well-Worn)": {
+    "yuan_price": 50800.0,
+    "usd_price": 7080.15,
+    "timestamp": "2025-07-10T15:10:43.661628+00:00"
   }
 }
