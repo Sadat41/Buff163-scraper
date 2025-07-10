@@ -21,5 +21,10 @@
         "yuan_price": 500.0,
         "usd_price": 69.68656,
         "timestamp": "2025-07-10T14:05:00.717908+00:00"
+    },
+    "AWP | Gungnir (Factory New)": {
+        "yuan_price": 270.0,
+        "usd_price": 37.630742399999995,
+        "timestamp": "2025-07-10T14:05:03.526727+00:00"
     }
 }
