@@ -1,25 +1,21 @@
 # backend_scraper_app.py
 from flask import Flask, jsonify, request
-import subprocess
 import os
 import json
 import time
-import requests
+import tempfile
+import shutil
 from datetime import datetime, timedelta, timezone
 from playwright.sync_api import sync_playwright
 import re
-import html
-import unicodedata
 
 app = Flask(__name__)
 
 # --- Configuration ---
-# FIXED: Use the script's directory instead of current working directory
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 GITHUB_REPO_PATH = SCRIPT_DIR  # This will be the directory where backend_scraper_app.py is located
 JSON_OUTPUT_FILE_NAME = "item_overrides.json"
 JSON_OUTPUT_FILE_PATH = os.path.join(GITHUB_REPO_PATH, JSON_OUTPUT_FILE_NAME)
-GITHUB_JSON_URL = "https://sadat41.github.io/Buff163-scraper/item_overrides.json"
 
 ITEMS_FILE = os.path.join(GITHUB_REPO_PATH, "items_to_scrape.txt")
 MARKET_IDS_FILE = os.path.join(GITHUB_REPO_PATH, "marketids.json")
@@ -32,83 +28,33 @@ print(f"🔧 Will save item_overrides.json to: {JSON_OUTPUT_FILE_PATH}")
 STALE_THRESHOLD_DAYS = 7
 YUAN_TO_USD_RATE = 0.13937312
 
-def clean_item_name(item_name):
-    """
-    FIXED: Clean and normalize item names to prevent encoding issues.
-    """
-    if not item_name:
-        return item_name
-    
-    try:
-        # First, decode HTML entities if present
-        cleaned = html.unescape(item_name)
-        
-        # Normalize Unicode characters (NFC normalization)
-        cleaned = unicodedata.normalize('NFC', cleaned)
-        
-        # Remove any non-printable characters except spaces
-        cleaned = ''.join(char for char in cleaned if char.isprintable() or char.isspace())
-        
-        # Clean up multiple spaces
-        cleaned = ' '.join(cleaned.split())
-        
-        # Remove any remaining problematic characters that might cause encoding issues
-        # Keep only ASCII letters, numbers, spaces, and common punctuation
-        allowed_chars = set('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ()-|.:™®')
-        cleaned = ''.join(char for char in cleaned if char in allowed_chars or ord(char) < 128)
-        
-        return cleaned.strip()
-    except Exception as e:
-        print(f"❌ Error cleaning item name '{item_name}': {e}")
-        # Fallback: return ASCII-only version
-        return ''.join(char for char in str(item_name) if ord(char) < 128).strip()
-
 def get_items_to_scrape():
     """Reads the list of items from the text file."""
     try:
         with open(ITEMS_FILE, "r", encoding='utf-8') as f:
-            items = []
-            for line in f:
-                item = line.strip()
-                if item:
-                    # Clean each item name as we read it
-                    cleaned_item = clean_item_name(item)
-                    items.append(cleaned_item)
-            return items
+            return [line.strip() for line in f if line.strip()]
     except FileNotFoundError:
         print(f"Error: {ITEMS_FILE} not found. Please create it.")
         return []
 
 def load_existing_data():
-    """FIXED: Loads existing data from both local file AND GitHub JSON."""
+    """Loads existing data from local file only."""
     local_data = {}
-    github_data = {}
     
-    # Try to load local file first
+    # Try to load local file
     try:
-        with open(JSON_OUTPUT_FILE_PATH, "r", encoding='utf-8') as f:
-            local_data = json.load(f)
-            print(f"✅ Loaded {len(local_data)} items from local JSON file.")
+        if os.path.exists(JSON_OUTPUT_FILE_PATH):
+            with open(JSON_OUTPUT_FILE_PATH, "r", encoding='utf-8') as f:
+                local_data = json.load(f)
+                print(f"✅ Loaded {len(local_data)} items from local JSON file.")
+        else:
+            print(f"⚠️ Local JSON file not found, starting with empty data.")
     except (FileNotFoundError, json.JSONDecodeError) as e:
         print(f"⚠️ Could not load local JSON file: {e}")
+        local_data = {}
     
-    # Try to load from GitHub (this is what the extension actually uses)
-    try:
-        response = requests.get(GITHUB_JSON_URL, timeout=10)
-        if response.status_code == 200:
-            github_data = response.json()
-            print(f"✅ Loaded {len(github_data)} items from GitHub JSON.")
-        else:
-            print(f"⚠️ GitHub JSON returned status {response.status_code}")
-    except requests.RequestException as e:
-        print(f"⚠️ Could not load GitHub JSON: {e}")
-    
-    # Merge data - GitHub data takes priority for consistency
-    merged_data = local_data.copy()
-    merged_data.update(github_data)
-    
-    print(f"📊 Total merged data: {len(merged_data)} items")
-    return merged_data
+    print(f"📊 Total loaded data: {len(local_data)} items")
+    return local_data
 
 def load_market_ids():
     """Loads the market IDs from the JSON file."""
@@ -120,7 +66,7 @@ def load_market_ids():
         return {}
 
 def is_stale(timestamp_str):
-    """FIXED: Checks if a timestamp is older than our threshold."""
+    """Checks if a timestamp is older than our threshold."""
     if not timestamp_str:
         return True
     
@@ -136,39 +82,54 @@ def is_stale(timestamp_str):
         return True
 
 def save_data(data):
-    """FIXED: Saves data with proper encoding and validates the result."""
+    """Atomically saves data to prevent corruption and validates the result."""
     try:
-        # Clean all item names before saving
-        cleaned_data = {}
-        for item_name, item_data in data.items():
-            cleaned_name = clean_item_name(item_name)
-            cleaned_data[cleaned_name] = item_data
+        # Create a temporary file in the same directory to ensure atomic write
+        temp_dir = os.path.dirname(JSON_OUTPUT_FILE_PATH)
+        temp_fd, temp_path = tempfile.mkstemp(dir=temp_dir, suffix='.json.tmp')
+        
+        try:
+            # Write to temporary file
+            with os.fdopen(temp_fd, 'w', encoding='utf-8') as temp_file:
+                json.dump(data, temp_file, indent=2, ensure_ascii=False)
+                temp_file.flush()
+                os.fsync(temp_file.fileno())  # Force write to disk
             
-            # Log if name was changed
-            if cleaned_name != item_name:
-                print(f"🧹 Cleaned item name: '{item_name}' -> '{cleaned_name}'")
-        
-        # Save with explicit UTF-8 encoding and ensure_ascii=False for proper Unicode handling
-        with open(JSON_OUTPUT_FILE_PATH, "w", encoding='utf-8') as f:
-            json.dump(cleaned_data, f, indent=2, ensure_ascii=False)
-        
-        # Validate the saved file
-        with open(JSON_OUTPUT_FILE_PATH, "r", encoding='utf-8') as f:
-            validated_data = json.load(f)
+            # Validate the temporary file by reading it back
+            with open(temp_path, "r", encoding='utf-8') as f:
+                validated_data = json.load(f)
+                if len(validated_data) != len(data):
+                    raise ValueError(f"Data validation failed: expected {len(data)} items, got {len(validated_data)}")
+            
+            # Atomically replace the original file
+            if os.name == 'nt':  # Windows
+                if os.path.exists(JSON_OUTPUT_FILE_PATH):
+                    os.replace(temp_path, JSON_OUTPUT_FILE_PATH)
+                else:
+                    shutil.move(temp_path, JSON_OUTPUT_FILE_PATH)
+            else:  # Unix/Linux/Mac
+                os.replace(temp_path, JSON_OUTPUT_FILE_PATH)
+            
             print(f"✅ Successfully saved and validated {len(validated_data)} items to {JSON_OUTPUT_FILE_NAME}")
             return True
+            
+        except Exception as e:
+            # Clean up temporary file if something went wrong
+            try:
+                os.unlink(temp_path)
+            except:
+                pass
+            raise e
+            
     except Exception as e:
         print(f"❌ Error saving data: {e}")
         return False
 
 def scrape_buff_price(item_name_with_phase, page, market_ids):
     """
-    FIXED: Scrapes the price of an item from Buff.163.com with proper encoding handling.
+    Scrapes the price of an item from Buff.163.com, handling phases.
     Returns a tuple (yuan_price, usd_price) or (None, None) on failure.
     """
-    # Clean the input item name first
-    item_name_with_phase = clean_item_name(item_name_with_phase)
-    
     base_item_name = item_name_with_phase
     phase_tag_id = None
     url_params = ""
@@ -208,13 +169,6 @@ def scrape_buff_price(item_name_with_phase, page, market_ids):
     
     try:
         print(f"Navigating to {url}")
-        
-        # FIXED: Set proper encoding headers for the page
-        page.set_extra_http_headers({
-            'Accept-Charset': 'utf-8',
-            'Accept-Language': 'en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7'
-        })
-        
         page.goto(url, wait_until="domcontentloaded", timeout=60000)
         print(f"Page loaded: {page.url}")
 
@@ -244,13 +198,9 @@ def scrape_buff_price(item_name_with_phase, page, market_ids):
 
 @app.route('/scrape-prices', methods=['POST'])
 def scrape_prices_endpoint():
-    """FIXED: Enhanced endpoint with better data management and encoding handling."""
+    """Enhanced endpoint with robust data management (no GitHub integration)."""
     data = request.get_json()
     item_to_scrape = data.get('item') if data else None
-
-    # Clean the item name if provided
-    if item_to_scrape:
-        item_to_scrape = clean_item_name(item_to_scrape)
 
     print(f"🎯 Received request to scrape: {item_to_scrape if item_to_scrape else 'all items'}")
 
@@ -259,7 +209,7 @@ def scrape_prices_endpoint():
         if not market_ids:
             return jsonify({"status": "error", "message": "Market IDs not loaded. Cannot scrape."}), 500
 
-        # FIXED: Load existing data from both local and GitHub
+        # Load existing data from local file only
         existing_data = load_existing_data()
         updated_data = existing_data.copy()
         scraped_item_data = None
@@ -267,14 +217,7 @@ def scrape_prices_endpoint():
 
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
-            context = browser.new_context(
-                # FIXED: Set proper encoding for the browser context
-                locale='en-US',
-                extra_http_headers={
-                    'Accept-Charset': 'utf-8'
-                }
-            )
-            page = context.new_page()
+            page = browser.new_page()
 
             items_list = [item_to_scrape] if item_to_scrape else get_items_to_scrape()
 
@@ -283,10 +226,7 @@ def scrape_prices_endpoint():
                 return jsonify({"status": "error", "message": "No items to scrape configured."}), 500
 
             for item_key in items_list:
-                # Clean item key
-                item_key = clean_item_name(item_key)
-                
-                # FIXED: More robust staleness check
+                # Check if item needs scraping
                 should_scrape = True
                 if item_key in existing_data:
                     timestamp_str = existing_data[item_key].get("timestamp")
@@ -327,41 +267,14 @@ def scrape_prices_endpoint():
 
             browser.close()
 
-        # FIXED: Only save if we actually have data and something changed
+        # Only save if we actually have data and something changed
         if updated_data and (items_actually_scraped > 0 or item_to_scrape):
             if save_data(updated_data):
                 print(f"💾 Updated {JSON_OUTPUT_FILE_NAME} locally with {len(updated_data)} total items.")
-                
-                # FIXED: Enhanced Git operations with better error handling
-                try:
-                    # Check if there are actually changes to commit
-                    git_status = subprocess.run(["git", "status", "--porcelain", JSON_OUTPUT_FILE_NAME], 
-                                              capture_output=True, text=True, check=True)
-                    
-                    if git_status.stdout.strip():  # Only commit if there are changes
-                        subprocess.run(["git", "add", JSON_OUTPUT_FILE_NAME], check=True)
-                        
-                        commit_message = f"Auto-update: Scraped {items_actually_scraped} items"
-                        if item_to_scrape:
-                            commit_message = f"Auto-update: Scraped '{item_to_scrape}'"
-                        
-                        subprocess.run(["git", "commit", "-m", commit_message], check=True)
-                        print(f"📝 Changes committed locally: {commit_message}")
-                        
-                        # Optional: Auto-push (commented out for stability)
-                        # subprocess.run(["git", "push"], check=True)
-                        # print("🚀 Changes pushed to GitHub.")
-                    else:
-                        print("📄 No changes detected in JSON file, skipping commit.")
-                        
-                except subprocess.CalledProcessError as git_e:
-                    print(f"❌ Git operation failed: {git_e}")
-                except Exception as git_other_e:
-                    print(f"❌ Unexpected Git error: {git_other_e}")
             else:
                 return jsonify({"status": "error", "message": "Failed to save data locally."}), 500
 
-        # FIXED: Better response messaging
+        # Build response message
         if item_to_scrape:
             if scraped_item_data:
                 response_message = f"✅ Successfully processed '{item_to_scrape}'. Data {'scraped' if items_actually_scraped > 0 else 'retrieved from cache'}."
@@ -381,12 +294,6 @@ def scrape_prices_endpoint():
             }
         }), 200
 
-    except subprocess.CalledProcessError as e:
-        print(f"❌ Subprocess failed: {e}")
-        return jsonify({"status": "error", "message": "Backend processing failed.", "details": str(e)}), 500
-    except FileNotFoundError as e:
-        print(f"❌ File not found: {e}")
-        return jsonify({"status": "error", "message": f"Required file not found: {e.filename}"}), 500
     except Exception as e:
         print(f"❌ Unexpected error: {e}")
         return jsonify({"status": "error", "message": "An unexpected server error occurred.", "details": str(e)}), 500
@@ -398,7 +305,7 @@ def health_check():
 
 @app.route('/data-status', methods=['GET'])
 def data_status():
-    """FIXED: New endpoint to check current data status without scraping."""
+    """Endpoint to check current data status without scraping."""
     try:
         existing_data = load_existing_data()
         market_ids = load_market_ids()
@@ -423,60 +330,11 @@ def data_status():
         return jsonify({
             "status": "success",
             "stats": stats,
-            "github_url": GITHUB_JSON_URL,
             "local_file": JSON_OUTPUT_FILE_PATH
         }), 200
         
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
-
-@app.route('/clean-data', methods=['POST'])
-def clean_existing_data():
-    """NEW: Endpoint to clean existing corrupted item names in the JSON file."""
-    try:
-        print("🧹 Starting data cleaning process...")
-        
-        # Load existing data
-        existing_data = load_existing_data()
-        
-        if not existing_data:
-            return jsonify({"status": "error", "message": "No existing data to clean."}), 400
-        
-        # Clean all item names
-        cleaned_data = {}
-        changes_made = 0
-        
-        for old_name, item_data in existing_data.items():
-            cleaned_name = clean_item_name(old_name)
-            cleaned_data[cleaned_name] = item_data
-            
-            if cleaned_name != old_name:
-                changes_made += 1
-                print(f"🧹 Cleaned: '{old_name}' -> '{cleaned_name}'")
-        
-        if changes_made > 0:
-            # Save the cleaned data
-            if save_data(cleaned_data):
-                print(f"✅ Cleaned {changes_made} item names and saved data.")
-                return jsonify({
-                    "status": "success",
-                    "message": f"Successfully cleaned {changes_made} item names.",
-                    "changes_made": changes_made,
-                    "total_items": len(cleaned_data)
-                }), 200
-            else:
-                return jsonify({"status": "error", "message": "Failed to save cleaned data."}), 500
-        else:
-            return jsonify({
-                "status": "success",
-                "message": "No corrupted item names found. Data is already clean.",
-                "changes_made": 0,
-                "total_items": len(cleaned_data)
-            }), 200
-        
-    except Exception as e:
-        print(f"❌ Error during data cleaning: {e}")
-        return jsonify({"status": "error", "message": f"Data cleaning failed: {str(e)}"}), 500
 
 if __name__ == '__main__':
     # For development purposes, run directly

@@ -9,7 +9,7 @@
     "usd_price": 8850.19,
     "timestamp": "2025-07-10T15:21:28.327822+00:00"
   },
-  "StatTrak™ M4A4 | Howl (Factory New)": {
+  "StatTrakÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ M4A4 | Howl (Factory New)": {
     "yuan_price": 101800.0,
     "usd_price": 14188.18,
     "timestamp": "2025-07-10T15:21:44.010469+00:00"
@@ -39,7 +39,7 @@
     "usd_price": 2321.26,
     "timestamp": "2025-07-10T15:39:13.396947+00:00"
   },
-  "StatTrak™ Karambit | Marble Fade (Factory New)": {
+  "StatTrakÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ Karambit | Marble Fade (Factory New)": {
     "yuan_price": 15000.0,
     "usd_price": 2090.6,
     "timestamp": "2025-07-10T15:39:25.359925+00:00"
@@ -54,7 +54,7 @@
     "usd_price": 19233.49,
     "timestamp": "2025-07-10T15:42:09.125622+00:00"
   },
-  "StatTrak™ M4A4 | Howl (Minimal Wear)": {
+  "StatTrakÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ M4A4 | Howl (Minimal Wear)": {
     "yuan_price": 75888.0,
     "usd_price": 10576.75,
     "timestamp": "2025-07-10T15:42:24.556249+00:00"
@@ -114,6 +114,121 @@
     "usd_price": 5992.56,
     "timestamp": "2025-07-10T14:50:13.953485+00:00"
   },
+  "StatTrakÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ M9 Bayonet | Autotronic (Well-Worn)": {
+    "yuan_price": 9500.0,
+    "usd_price": 1324.04,
+    "timestamp": "2025-07-10T14:53:29.226002+00:00"
+  },
+  "StatTrakÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ AK-47 | Fire Serpent (Well-Worn)": {
+    "yuan_price": 15499.0,
+    "usd_price": 2160.14,
+    "timestamp": "2025-07-10T14:55:34.734476+00:00"
+  },
+  "StatTrakÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ Talon Knife | Blue Steel (Factory New)": {
+    "yuan_price": 5888.88,
+    "usd_price": 820.75,
+    "timestamp": "2025-07-10T14:56:15.849056+00:00"
+  },
+  "StatTrakÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ AK-47 | Fire Serpent (Factory New)": {
+    "yuan_price": 40000.0,
+    "usd_price": 5574.92,
+    "timestamp": "2025-07-10T16:19:43.750117+00:00"
+  },
+  "StatTrakÃ¢â€žÂ¢ M4A4 | Howl (Factory New)": {
+    "yuan_price": 101800.0,
+    "usd_price": 14188.18,
+    "timestamp": "2025-07-10T15:21:44.010469+00:00"
+  },
+  "StatTrakÃ¢â€žÂ¢ Karambit | Marble Fade (Factory New)": {
+    "yuan_price": 15000.0,
+    "usd_price": 2090.6,
+    "timestamp": "2025-07-10T15:39:25.359925+00:00"
+  },
+  "StatTrakÃ¢â€žÂ¢ M4A4 | Howl (Minimal Wear)": {
+    "yuan_price": 75888.0,
+    "usd_price": 10576.75,
+    "timestamp": "2025-07-10T15:42:24.556249+00:00"
+  },
+  "StatTrakÃ¢â€žÂ¢ M9 Bayonet | Autotronic (Well-Worn)": {
+    "yuan_price": 9500.0,
+    "usd_price": 1324.04,
+    "timestamp": "2025-07-10T14:53:29.226002+00:00"
+  },
+  "StatTrakÃ¢â€žÂ¢ AK-47 | Fire Serpent (Well-Worn)": {
+    "yuan_price": 15499.0,
+    "usd_price": 2160.14,
+    "timestamp": "2025-07-10T14:55:34.734476+00:00"
+  },
+  "StatTrakÃ¢â€žÂ¢ Talon Knife | Blue Steel (Factory New)": {
+    "yuan_price": 5888.88,
+    "usd_price": 820.75,
+    "timestamp": "2025-07-10T14:56:15.849056+00:00"
+  },
+  "StatTrakÃ¢â€žÂ¢ AK-47 | Fire Serpent (Factory New)": {
+    "yuan_price": 40000.0,
+    "usd_price": 5574.92,
+    "timestamp": "2025-07-10T16:19:43.750117+00:00"
+  },
+  "Ã¢Ëœâ€¦ Butterfly Knife | Scorched (Well-Worn)": {
+    "yuan_price": 5947.5,
+    "usd_price": 828.92,
+    "timestamp": "2025-07-10T17:12:36.433198+00:00"
+  },
+  "StatTrakâ„¢ M4A4 | Howl (Factory New)": {
+    "yuan_price": 101800.0,
+    "usd_price": 14188.18,
+    "timestamp": "2025-07-10T15:21:44.010469+00:00"
+  },
+  "StatTrakâ„¢ Karambit | Marble Fade (Factory New)": {
+    "yuan_price": 15000.0,
+    "usd_price": 2090.6,
+    "timestamp": "2025-07-10T15:39:25.359925+00:00"
+  },
+  "StatTrakâ„¢ M4A4 | Howl (Minimal Wear)": {
+    "yuan_price": 75888.0,
+    "usd_price": 10576.75,
+    "timestamp": "2025-07-10T15:42:24.556249+00:00"
+  },
+  "StatTrakâ„¢ M9 Bayonet | Autotronic (Well-Worn)": {
+    "yuan_price": 9500.0,
+    "usd_price": 1324.04,
+    "timestamp": "2025-07-10T14:53:29.226002+00:00"
+  },
+  "StatTrakâ„¢ AK-47 | Fire Serpent (Well-Worn)": {
+    "yuan_price": 15499.0,
+    "usd_price": 2160.14,
+    "timestamp": "2025-07-10T14:55:34.734476+00:00"
+  },
+  "StatTrakâ„¢ Talon Knife | Blue Steel (Factory New)": {
+    "yuan_price": 5888.88,
+    "usd_price": 820.75,
+    "timestamp": "2025-07-10T14:56:15.849056+00:00"
+  },
+  "StatTrakâ„¢ AK-47 | Fire Serpent (Factory New)": {
+    "yuan_price": 40000.0,
+    "usd_price": 5574.92,
+    "timestamp": "2025-07-10T16:19:43.750117+00:00"
+  },
+  "â˜… Butterfly Knife | Scorched (Minimal Wear)": {
+    "yuan_price": 7179.0,
+    "usd_price": 1000.56,
+    "timestamp": "2025-07-10T17:13:49.068787+00:00"
+  },
+  "StatTrak™ M4A4 | Howl (Factory New)": {
+    "yuan_price": 101800.0,
+    "usd_price": 14188.18,
+    "timestamp": "2025-07-10T15:21:44.010469+00:00"
+  },
+  "StatTrak™ Karambit | Marble Fade (Factory New)": {
+    "yuan_price": 15000.0,
+    "usd_price": 2090.6,
+    "timestamp": "2025-07-10T15:39:25.359925+00:00"
+  },
+  "StatTrak™ M4A4 | Howl (Minimal Wear)": {
+    "yuan_price": 75888.0,
+    "usd_price": 10576.75,
+    "timestamp": "2025-07-10T15:42:24.556249+00:00"
+  },
   "StatTrak™ M9 Bayonet | Autotronic (Well-Worn)": {
     "yuan_price": 9500.0,
     "usd_price": 1324.04,
@@ -133,5 +248,260 @@
     "yuan_price": 40000.0,
     "usd_price": 5574.92,
     "timestamp": "2025-07-10T16:19:43.750117+00:00"
+  },
+  "★ StatTrak™ Butterfly Knife | Scorched (Field-Tested)": {
+    "yuan_price": 6120.0,
+    "usd_price": 852.96,
+    "timestamp": "2025-07-10T17:14:07.613311+00:00"
+  },
+  "★ Butterfly Knife | Urban Masked (Minimal Wear)": {
+    "yuan_price": 6968.0,
+    "usd_price": 971.15,
+    "timestamp": "2025-07-10T17:24:06.283889+00:00"
+  },
+  "★ Butterfly Knife | Urban Masked (Well-Worn)": {
+    "yuan_price": 5987.5,
+    "usd_price": 834.5,
+    "timestamp": "2025-07-10T17:25:32.776520+00:00"
+  },
+  "★ Hand Wraps | CAUTION! (Factory New)": {
+    "yuan_price": 9000.0,
+    "usd_price": 1254.36,
+    "timestamp": "2025-07-10T17:26:11.293933+00:00"
+  },
+  "★ StatTrak™ Nomad Knife | Boreal Forest (Minimal Wear)": {
+    "yuan_price": 1250.0,
+    "usd_price": 174.22,
+    "timestamp": "2025-07-10T17:28:55.337080+00:00"
+  },
+  "Sticker | Doppler Poison Frog (Foil)": {
+    "yuan_price": 370.0,
+    "usd_price": 51.57,
+    "timestamp": "2025-07-10T17:34:31.122654+00:00"
+  },
+  "★ Survival Knife | Ultraviolet (Factory New)": {
+    "yuan_price": 1993.0,
+    "usd_price": 277.77,
+    "timestamp": "2025-07-10T17:34:52.963574+00:00"
+  },
+  "★ StatTrak™ Butterfly Knife | Damascus Steel (Well-Worn)": {
+    "yuan_price": 9400.0,
+    "usd_price": 1310.11,
+    "timestamp": "2025-07-10T17:36:34.760524+00:00"
+  },
+  "StatTrak™ AWP | BOOM (Factory New)": {
+    "yuan_price": 5499.0,
+    "usd_price": 766.41,
+    "timestamp": "2025-07-10T17:37:02.893772+00:00"
+  },
+  "★ StatTrak™ Classic Knife | Night Stripe (Field-Tested)": {
+    "yuan_price": 1310.5,
+    "usd_price": 182.65,
+    "timestamp": "2025-07-10T17:45:09.957037+00:00"
+  },
+  "★ Paracord Knife | Case Hardened (Factory New)": {
+    "yuan_price": 2300.0,
+    "usd_price": 320.56,
+    "timestamp": "2025-07-10T17:48:20.284826+00:00"
+  },
+  "Sticker | snatchie | London 2018": {
+    "yuan_price": 5.19,
+    "usd_price": 0.72,
+    "timestamp": "2025-07-10T17:58:33.008175+00:00"
+  },
+  "Sticker | NEO | London 2018": {
+    "yuan_price": 11.0,
+    "usd_price": 1.53,
+    "timestamp": "2025-07-10T17:58:40.265209+00:00"
+  },
+  "Sticker | EliGE | Atlanta 2017": {
+    "yuan_price": 117.9,
+    "usd_price": 16.43,
+    "timestamp": "2025-07-10T17:58:46.389322+00:00"
+  },
+  "Sticker | Virtus.Pro | Atlanta 2017": {
+    "yuan_price": 31.99,
+    "usd_price": 4.46,
+    "timestamp": "2025-07-10T17:58:53.202590+00:00"
+  },
+  "Sticker | tarik | MLG Columbus 2016": {
+    "yuan_price": 73.88,
+    "usd_price": 10.3,
+    "timestamp": "2025-07-10T17:59:10.975376+00:00"
+  },
+  "Sticker | bodyy | Cologne 2016": {
+    "yuan_price": 34.48,
+    "usd_price": 4.81,
+    "timestamp": "2025-07-10T18:01:02.185818+00:00"
+  },
+  "★ Bayonet | Tiger Tooth (Minimal Wear)": {
+    "yuan_price": 4600.0,
+    "usd_price": 641.12,
+    "timestamp": "2025-07-10T18:01:08.270485+00:00"
+  },
+  "Souvenir M4A1-S | Welcome to the Jungle (Field-Tested)": {
+    "yuan_price": 7199.0,
+    "usd_price": 1003.35,
+    "timestamp": "2025-07-10T18:01:21.675944+00:00"
+  },
+  "Souvenir M4A1-S | Boreal Forest (Minimal Wear)": {
+    "yuan_price": 2600.0,
+    "usd_price": 362.37,
+    "timestamp": "2025-07-10T18:31:40.806195+00:00"
+  },
+  "★ StatTrak™ Bayonet | Rust Coat (Well-Worn)": {
+    "yuan_price": 2099.99,
+    "usd_price": 292.68,
+    "timestamp": "2025-07-10T18:38:29.450978+00:00"
+  },
+  "★ StatTrak™ Bayonet | Black Laminate (Field-Tested)": {
+    "yuan_price": 2296.0,
+    "usd_price": 320.0,
+    "timestamp": "2025-07-10T21:32:22.936359+00:00"
+  },
+  "★ Butterfly Knife | Lore (Battle-Scarred)": {
+    "yuan_price": 7140.0,
+    "usd_price": 995.12,
+    "timestamp": "2025-07-11T09:58:31.842625+00:00"
+  },
+  "★ Butterfly Knife | Forest DDPAT (Battle-Scarred)": {
+    "yuan_price": 5809.0,
+    "usd_price": 809.62,
+    "timestamp": "2025-07-11T10:52:53.502404+00:00"
+  },
+  "★ Karambit | Freehand (Minimal Wear)": {
+    "yuan_price": 7330.0,
+    "usd_price": 1021.6,
+    "timestamp": "2025-07-11T10:53:07.201121+00:00"
+  },
+  "★ Butterfly Knife | Freehand (Minimal Wear)": {
+    "yuan_price": 9089.0,
+    "usd_price": 1266.76,
+    "timestamp": "2025-07-11T10:56:28.342514+00:00"
+  },
+  "★ StatTrak™ Karambit | Urban Masked (Minimal Wear)": {
+    "yuan_price": 6088.0,
+    "usd_price": 848.5,
+    "timestamp": "2025-07-11T11:19:05.726739+00:00"
+  },
+  "★ StatTrak™ M9 Bayonet | Bright Water (Well-Worn)": {
+    "yuan_price": 4599.0,
+    "usd_price": 640.98,
+    "timestamp": "2025-07-11T11:19:14.302699+00:00"
+  },
+  "★ StatTrak™ Butterfly Knife | Night (Field-Tested)": {
+    "yuan_price": 7218.0,
+    "usd_price": 1006.0,
+    "timestamp": "2025-07-11T11:23:36.160472+00:00"
+  },
+  "AK-47 | Wild Lotus (Battle-Scarred)": {
+    "yuan_price": 31888.0,
+    "usd_price": 4444.33,
+    "timestamp": "2025-07-11T11:39:36.463233+00:00"
+  },
+  "M4A4 | Poseidon (Field-Tested)": {
+    "yuan_price": 7996.0,
+    "usd_price": 1114.43,
+    "timestamp": "2025-07-11T12:34:47.404766+00:00"
+  },
+  "★ Butterfly Knife | Boreal Forest (Minimal Wear)": {
+    "yuan_price": 6699.5,
+    "usd_price": 933.73,
+    "timestamp": "2025-07-11T12:42:41.462255+00:00"
+  },
+  "M4A1-S | Knight (Factory New)": {
+    "yuan_price": 31769.0,
+    "usd_price": 4427.74,
+    "timestamp": "2025-07-11T12:49:12.595006+00:00"
+  },
+  "★ Butterfly Knife | Autotronic (Minimal Wear)": {
+    "yuan_price": 16548.0,
+    "usd_price": 2306.35,
+    "timestamp": "2025-07-11T13:28:15.019731+00:00"
+  },
+  "AWP | Desert Hydra (Battle-Scarred)": {
+    "yuan_price": 10143.0,
+    "usd_price": 1413.66,
+    "timestamp": "2025-07-11T13:34:06.011294+00:00"
+  },
+  "★ StatTrak™ Karambit | Stained (Battle-Scarred)": {
+    "yuan_price": 6488.88,
+    "usd_price": 904.38,
+    "timestamp": "2025-07-11T13:35:39.070345+00:00"
+  },
+  "★ Driver Gloves | Black Tie (Factory New)": {
+    "yuan_price": 16632.5,
+    "usd_price": 2318.12,
+    "timestamp": "2025-07-11T13:38:28.198704+00:00"
+  },
+  "★ M9 Bayonet | Autotronic (Well-Worn)": {
+    "yuan_price": 9000.0,
+    "usd_price": 1254.36,
+    "timestamp": "2025-07-11T13:38:53.357843+00:00"
+  },
+  "★ Karambit | Damascus Steel (Well-Worn)": {
+    "yuan_price": 7554.5,
+    "usd_price": 1052.89,
+    "timestamp": "2025-07-11T13:43:35.844085+00:00"
+  },
+  "★ Karambit | Night (Well-Worn)": {
+    "yuan_price": 6400.0,
+    "usd_price": 891.99,
+    "timestamp": "2025-07-11T14:04:01.374144+00:00"
+  },
+  "★ Butterfly Knife | Rust Coat (Well-Worn)": {
+    "yuan_price": 7720.0,
+    "usd_price": 1075.96,
+    "timestamp": "2025-07-11T14:40:26.921884+00:00"
+  },
+  "★ Karambit | Crimson Web (Field-Tested)": {
+    "yuan_price": 7897.0,
+    "usd_price": 1100.63,
+    "timestamp": "2025-07-11T15:06:51.583879+00:00"
+  },
+  "StatTrak™ M4A1-S | Printstream (Factory New)": {
+    "yuan_price": 9890.0,
+    "usd_price": 1378.4,
+    "timestamp": "2025-07-11T15:22:41.733403+00:00"
+  },
+  "★ Sport Gloves | Pandora's Box (Minimal Wear)": {
+    "yuan_price": 99999.0,
+    "usd_price": 13937.17,
+    "timestamp": "2025-07-11T18:06:07.952794+00:00"
+  },
+  "★ Broken Fang Gloves | Jade (Factory New)": {
+    "yuan_price": 6230.96,
+    "usd_price": 868.43,
+    "timestamp": "2025-07-11T18:12:35.148855+00:00"
+  },
+  "Five-SeveN | Withered Vine (Battle-Scarred)": {
+    "yuan_price": 39.0,
+    "usd_price": 5.44,
+    "timestamp": "2025-07-11T19:05:45.735866+00:00"
+  },
+  "SG 553 | Tornado (Battle-Scarred)": {
+    "yuan_price": 79.39,
+    "usd_price": 11.06,
+    "timestamp": "2025-07-11T19:10:09.799858+00:00"
+  },
+  "★ StatTrak™ Gut Knife | Scorched (Field-Tested)": {
+    "yuan_price": 850.0,
+    "usd_price": 118.47,
+    "timestamp": "2025-07-11T19:21:58.520233+00:00"
+  },
+  "Sawed-Off | Irradiated Alert (Factory New)": {
+    "yuan_price": 388.0,
+    "usd_price": 54.08,
+    "timestamp": "2025-07-11T20:16:47.246209+00:00"
+  },
+  "Negev | Phoenix Stencil (Minimal Wear)": {
+    "yuan_price": 111.4,
+    "usd_price": 15.53,
+    "timestamp": "2025-07-11T20:23:17.358684+00:00"
+  },
+  "Negev | dev_texture (Field-Tested)": {
+    "yuan_price": 1.73,
+    "usd_price": 0.24,
+    "timestamp": "2025-07-11T20:26:08.043531+00:00"
   }
 }
