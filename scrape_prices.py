@@ -1,4 +1,4 @@
-# scrape_prices.py
+# scrape_prices.py - this is only for testing the scraper, it doesn't store data in the database
 import json
 import time
 from datetime import datetime, timedelta, timezone
@@ -14,7 +14,7 @@ YUAN_TO_USD_RATE = 0.13937312  # Given conversion rate
 
 def get_items_to_scrape():
     """Reads the list of items from the text file."""
-    with open(ITEMS_FILE, "r", encoding='utf-8') as f: # Added encoding='utf-8' for robust file reading
+    with open(ITEMS_FILE, "r", encoding='utf-8') as f: 
         return [line.strip() for line in f if line.strip()]
 
 def load_existing_data():
@@ -28,10 +28,10 @@ def load_existing_data():
 def load_market_ids():
     """Loads the market IDs from the JSON file."""
     try:
-        with open(MARKET_IDS_FILE, "r", encoding='utf-8') as f: # Added encoding='utf-8' for robust file reading
+        with open(MARKET_IDS_FILE, "r", encoding='utf-8') as f: # Added encoding='utf-8' 
             return json.load(f)
     except (FileNotFoundError, json.JSONDecodeError) as e:
-        print(f"Error loading {MARKET_IDS_FILE}: {e}") # Improved error message
+        print(f"Error loading {MARKET_IDS_FILE}: {e}") 
         return {}
 
 def is_stale(timestamp_str):
@@ -98,9 +98,7 @@ def scrape_buff_price(item_name_with_phase, browser, market_ids):
         print(f"Navigating to {url}")
         page.goto(url, wait_until="domcontentloaded")
 
-        # Optional: Add screenshot for debugging if needed (uncomment to activate)
-        # page.screenshot(path=f"debug_page_{buff_id}_{phase_name}.png" if phase_name else f"debug_page_{buff_id}.png")
-
+        # Wait for the price element to be visible
         page.wait_for_selector(price_selector, state='visible', timeout=30000)
 
         price_element = page.query_selector(price_selector)
