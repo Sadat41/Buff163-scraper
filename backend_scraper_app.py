@@ -99,55 +99,82 @@ def is_stale(timestamp_str):
         logger.error(f"DEBUG: Invalid timestamp '{timestamp_str}': {e}")
         return True
 
-def save_data(data):
-    """Atomically saves data to prevent corruption and validates the result, with file lock."""
-    lock = FileLock(JSON_LOCK_FILE_PATH)
+def save_data_atomic(data):
+    """Atomically saves data to prevent corruption and validates the result."""
+    # NOTE: This function assumes the caller already holds the file lock
     try:
-        with lock: # Acquire lock before writing
-            # a temporary file in the same directory to ensure atomic write
-            temp_dir = os.path.dirname(JSON_OUTPUT_FILE_PATH)
-            temp_fd, temp_path = tempfile.mkstemp(dir=temp_dir, suffix='.json.tmp')
+        # a temporary file in the same directory to ensure atomic write
+        temp_dir = os.path.dirname(JSON_OUTPUT_FILE_PATH)
+        temp_fd, temp_path = tempfile.mkstemp(dir=temp_dir, suffix='.json.tmp')
+        
+        try:
+            # Write to temporary file
+            with os.fdopen(temp_fd, 'w', encoding='utf-8') as temp_file:
+                json.dump(data, temp_file, indent=2, ensure_ascii=False)
+                temp_file.flush()
+                os.fsync(temp_file.fileno())  # Force write to disk
             
-            try:
-                # Write to temporary file
-                with os.fdopen(temp_fd, 'w', encoding='utf-8') as temp_file:
-                    json.dump(data, temp_file, indent=2, ensure_ascii=False)
-                    temp_file.flush()
-                    os.fsync(temp_file.fileno())  # Force write to disk
-                
-                # Validate the temporary file by reading it back
-                with open(temp_path, "r", encoding='utf-8') as f:
-                    validated_data = json.load(f)
-                    if len(validated_data) != len(data):
-                        raise ValueError(f"Data validation failed: expected {len(data)} items, got {len(validated_data)}")
-                
-                # Atomically replace the original file
-                if os.name == 'nt':  # Windows
-                    if os.path.exists(JSON_OUTPUT_FILE_PATH):
-                        os.replace(temp_path, JSON_OUTPUT_FILE_PATH)
-                    else:
-                        shutil.move(temp_path, JSON_OUTPUT_FILE_PATH)
-                else:  # Unix/Linux/Mac
+            # Validate the temporary file by reading it back
+            with open(temp_path, "r", encoding='utf-8') as f:
+                validated_data = json.load(f)
+                if len(validated_data) != len(data):
+                    raise ValueError(f"Data validation failed: expected {len(data)} items, got {len(validated_data)}")
+            
+            # Atomically replace the original file
+            if os.name == 'nt':  # Windows
+                if os.path.exists(JSON_OUTPUT_FILE_PATH):
                     os.replace(temp_path, JSON_OUTPUT_FILE_PATH)
-                
-                logger.info(f"✅ Successfully saved and validated {len(validated_data)} items to {JSON_OUTPUT_FILE_NAME}")
-                return True
-                
-            except Exception as e:
-                # Clean up temporary file if something went wrong
-                try:
-                    os.unlink(temp_path)
-                except Exception as cleanup_e:
-                    logger.error(f"Error cleaning up temp file {temp_path}: {cleanup_e}")
-                raise e
-                
+                else:
+                    shutil.move(temp_path, JSON_OUTPUT_FILE_PATH)
+            else:  # Unix/Linux/Mac
+                os.replace(temp_path, JSON_OUTPUT_FILE_PATH)
+            
+            logger.info(f"✅ Successfully saved and validated {len(validated_data)} items to {JSON_OUTPUT_FILE_NAME}")
+            return True
+            
+        except Exception as e:
+            # Clean up temporary file if something went wrong
+            try:
+                os.unlink(temp_path)
+            except Exception as cleanup_e:
+                logger.error(f"Error cleaning up temp file {temp_path}: {cleanup_e}")
+            raise e
+            
     except Exception as e:
         logger.error(f"❌ Error saving data: {e}")
         return False
-    finally:
-        # lock is automatically released by 'with' statement
-        pass
 
+def update_item_data_safely(item_key, yuan_price, usd_price):
+    """
+    Safely updates a single item's data using file locking.
+    This prevents race conditions when multiple requests try to update simultaneously.
+    """
+    lock = FileLock(JSON_LOCK_FILE_PATH)
+    try:
+        with lock:
+            # Load the latest data while holding the lock
+            existing_data = {}
+            if os.path.exists(JSON_OUTPUT_FILE_PATH):
+                with open(JSON_OUTPUT_FILE_PATH, "r", encoding='utf-8') as f:
+                    existing_data = json.load(f)
+            
+            # Update the specific item
+            current_timestamp = datetime.now(timezone.utc).isoformat()
+            existing_data[item_key] = {
+                "yuan_price": yuan_price,
+                "usd_price": usd_price,
+                "timestamp": current_timestamp
+            }
+            
+            # Save the updated data
+            success = save_data_atomic(existing_data)
+            if success:
+                logger.info(f"💾 Successfully updated {item_key} in {JSON_OUTPUT_FILE_NAME} (total: {len(existing_data)} items)")
+            return success, existing_data
+            
+    except Exception as e:
+        logger.error(f"❌ Error updating item data for {item_key}: {e}")
+        return False, {}
 
 # retry logic
 def scrape_buff_price(item_name_with_phase, page, market_ids):
@@ -249,7 +276,6 @@ def perform_scheduled_price_update():
             return
 
         existing_data = load_existing_data()
-        updated_data = existing_data.copy() # Work on a copy
         items_actually_scraped = 0
         
         stale_items_to_scrape = []
@@ -273,39 +299,28 @@ def perform_scheduled_price_update():
                 yuan_price, usd_price = scrape_buff_price(item_key, page, market_ids)
                 
                 if usd_price is not None:
-                    current_timestamp = datetime.now(timezone.utc).isoformat()
-                    updated_data[item_key] = {
-                        "yuan_price": yuan_price,
-                        "usd_price": usd_price,
-                        "timestamp": current_timestamp
-                    }
-                    items_actually_scraped += 1
-                    logger.info(f"✅ Successfully scraped {item_key}: ${usd_price} (scheduled update)")
+                    success, _ = update_item_data_safely(item_key, yuan_price, usd_price)
+                    if success:
+                        items_actually_scraped += 1
+                        logger.info(f"✅ Successfully scraped {item_key}: ${usd_price} (scheduled update)")
+                    else:
+                        logger.error(f"❌ Failed to save scraped data for {item_key}")
                 else:
                     logger.warning(f"❌ Failed to scrape {item_key} (scheduled update). Keeping old data if it exists.")
-                    # Data is only updated if scrape is successful. If not, old data remains.
                 
                 # Sleep between requests to avoid overwhelming the server
                 time.sleep(2)
 
             browser.close()
 
-        # Only save if we actually scraped something new/updated, or if data was lost (which should be prevented by locking now)
-        if items_actually_scraped > 0:
-            if save_data(updated_data):
-                logger.info(f"💾 Scheduled update: Updated {JSON_OUTPUT_FILE_NAME} locally with {len(updated_data)} total items. Scraped {items_actually_scraped} items.")
-            else:
-                logger.error("❌ Scheduled update: Failed to save data locally.")
-        else:
-            logger.info("Scheduled update: No items were successfully scraped in this run, or no stale items found.")
-
+        logger.info(f"💾 Scheduled update completed. Scraped {items_actually_scraped} items.")
 
     except Exception as e:
         logger.exception(f"❌ Unexpected error during scheduled price update:") 
 
 @app.route('/scrape-prices', methods=['POST'])
 def scrape_prices_endpoint():
-    """Enhanced endpoint with robust data management (no GitHub integration)."""
+    """Enhanced endpoint with robust data management and race condition prevention."""
     data = request.get_json()
     item_to_scrape = data.get('item') if data else None
 
@@ -316,9 +331,6 @@ def scrape_prices_endpoint():
         if not market_ids:
             return jsonify({"status": "error", "message": "Market IDs not loaded. Cannot scrape."}), 500
 
-        # Load existing data from local file only
-        existing_data = load_existing_data()
-        updated_data = existing_data.copy()
         scraped_item_data = None
         items_actually_scraped = 0
 
@@ -328,7 +340,6 @@ def scrape_prices_endpoint():
         if not items_list:
             # If no items are in items_to_scrape.txt AND no specific item was requested, it's an error.
             return jsonify({"status": "error", "message": "No items to scrape configured or requested."}), 500
-
 
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
@@ -340,8 +351,10 @@ def scrape_prices_endpoint():
                 if item_key_raw != item_key:
                     logger.info(f"🔧 Corrected item name for request: from '{item_key_raw}' to '{item_key}'")
 
-                # Check if item needs scraping
+                # Check if item needs scraping by loading fresh data each time
                 should_scrape = True
+                existing_data = load_existing_data()
+                
                 if item_key in existing_data:
                     timestamp_str = existing_data[item_key].get("timestamp")
                     if timestamp_str and not is_stale(timestamp_str):
@@ -359,35 +372,29 @@ def scrape_prices_endpoint():
                     yuan_price, usd_price = scrape_buff_price(item_key, page, market_ids)
                     
                     if usd_price is not None:
-                        current_timestamp = datetime.now(timezone.utc).isoformat()
-                        updated_data[item_key] = {
-                            "yuan_price": yuan_price,
-                            "usd_price": usd_price,
-                            "timestamp": current_timestamp
-                        }
-                        items_actually_scraped += 1
+                        # Use the safe update function to prevent race conditions
+                        success, updated_data = update_item_data_safely(item_key, yuan_price, usd_price)
                         
-                        # Only set scraped_item_data if this was the specifically requested item
-                        if item_key == item_to_scrape: 
-                            scraped_item_data = updated_data[item_key]
-                        
-                        logger.info(f"✅ Successfully scraped {item_key}: ${usd_price}")
+                        if success:
+                            items_actually_scraped += 1
+                            
+                            # Only set scraped_item_data if this was the specifically requested item
+                            if item_key == item_to_scrape: 
+                                scraped_item_data = updated_data[item_key]
+                            
+                            logger.info(f"✅ Successfully scraped {item_key}: ${usd_price}")
+                        else:
+                            logger.error(f"❌ Failed to save scraped data for {item_key}")
                     else:
                         logger.warning(f"❌ Failed to scrape {item_key}. Keeping old data if it exists.")
-                        # Don't update existing data if scraping fails
                 
                 if should_scrape:
                     time.sleep(2)
 
             browser.close()
 
-        # Only save if we actually have data and something potentially changed
-        # or if a specific item was requested and processed (even if from cache)
-        if updated_data and (items_actually_scraped > 0 or (item_to_scrape and item_to_scrape in updated_data)):
-            if save_data(updated_data):
-                logger.info(f"💾 Updated {JSON_OUTPUT_FILE_NAME} locally with {len(updated_data)} total items.")
-            else:
-                return jsonify({"status": "error", "message": "Failed to save data locally."}), 500
+        # Get final stats
+        final_data = load_existing_data()
 
         # Build response message
         if item_to_scrape:
@@ -403,7 +410,7 @@ def scrape_prices_endpoint():
             "message": response_message,
             "data": scraped_item_data,
             "stats": {
-                "total_items": len(updated_data),
+                "total_items": len(final_data),
                 "items_scraped": items_actually_scraped,
                 "items_from_cache": len(items_list) - items_actually_scraped
             }
