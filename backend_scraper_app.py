@@ -10,7 +10,7 @@ from playwright.sync_api import sync_playwright
 import re
 from apscheduler.schedulers.background import BackgroundScheduler
 from filelock import FileLock # Import FileLock for safe concurrent file access
-import logging # For better logging
+import logging 
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -36,8 +36,8 @@ logger.info(f"🔧 Will save item_overrides.json to: {JSON_OUTPUT_FILE_PATH}")
 logger.info(f"🔧 Lock file for item_overrides.json at: {JSON_LOCK_FILE_PATH}")
 STALE_THRESHOLD_DAYS = 7
 YUAN_TO_USD_RATE = 0.13937312
-MAX_SCRAPE_RETRIES = 3 # New: Number of retries for failed scrapes
-RETRY_DELAY_SECONDS = 5 # New: Delay between retries
+MAX_SCRAPE_RETRIES = 3 # No. of retries for failed scrapes
+RETRY_DELAY_SECONDS = 5 # Delay between retries
 
 def get_items_to_scrape():
     """Reads the list of items from the text file."""
@@ -104,7 +104,7 @@ def save_data(data):
     lock = FileLock(JSON_LOCK_FILE_PATH)
     try:
         with lock: # Acquire lock before writing
-            # Create a temporary file in the same directory to ensure atomic write
+            # a temporary file in the same directory to ensure atomic write
             temp_dir = os.path.dirname(JSON_OUTPUT_FILE_PATH)
             temp_fd, temp_path = tempfile.mkstemp(dir=temp_dir, suffix='.json.tmp')
             
@@ -149,7 +149,7 @@ def save_data(data):
         pass
 
 
-# MODIFIED: scrape_buff_price to include retry logic
+# retry logic
 def scrape_buff_price(item_name_with_phase, page, market_ids):
     """
     Scrapes the price of an item from Buff.163.com, handling phases.
@@ -168,12 +168,11 @@ def scrape_buff_price(item_name_with_phase, page, market_ids):
         phase_name = phase_match.group(2).strip()
         logger.info(f"Detected base item: '{base_item_name}', Phase: '{phase_name}'")
 
-    # NEW: Apply item name correction here for consistency before market_ids lookup
     # This ensures consistency for both requested scrapes and scheduled scrapes.
     corrected_item_name_for_lookup = re.sub(r'(\s(?:Doppler|Gamma Doppler))\s(Phase\s*\d|Ruby|Sapphire|Emerald|Black Pearl)', r'\1 - \2', base_item_name, flags=re.IGNORECASE)
     if corrected_item_name_for_lookup != base_item_name:
         logger.info(f"🔧 Corrected item name for market ID lookup: from '{base_item_name}' to '{corrected_item_name_for_lookup}'")
-        base_item_name = corrected_item_name_for_lookup # Use the corrected name for lookup
+        base_item_name = corrected_item_name_for_lookup 
 
     if base_item_name not in market_ids:
         logger.error(f"Error: Base item '{base_item_name}' not found in market IDs.")
@@ -236,7 +235,7 @@ def scrape_buff_price(item_name_with_phase, page, market_ids):
     
     return None, None # Return None, None if all retries fail
 
-# MODIFIED: perform_scheduled_price_update to iterate through ALL existing_data
+# perform_scheduled_price_update to iterate through ALL existing_data
 def perform_scheduled_price_update():
     """
     Function to be called by the scheduler to check and update stale prices.
@@ -286,7 +285,7 @@ def perform_scheduled_price_update():
                     logger.warning(f"❌ Failed to scrape {item_key} (scheduled update). Keeping old data if it exists.")
                     # Data is only updated if scrape is successful. If not, old data remains.
                 
-                # Be polite to Buff.163.com
+                # Sleep between requests to avoid overwhelming the server
                 time.sleep(2)
 
             browser.close()
@@ -302,7 +301,7 @@ def perform_scheduled_price_update():
 
 
     except Exception as e:
-        logger.exception(f"❌ Unexpected error during scheduled price update:") # Use exception for full traceback
+        logger.exception(f"❌ Unexpected error during scheduled price update:") 
 
 @app.route('/scrape-prices', methods=['POST'])
 def scrape_prices_endpoint():
@@ -455,7 +454,7 @@ def data_status():
         return jsonify({"status": "error", "message": str(e)}), 500
 
 if __name__ == '__main__':
-    # Initialize and start the scheduler
+    
     scheduler = BackgroundScheduler()
     # Schedule perform_scheduled_price_update to run every 5 minutes
     scheduler.add_job(perform_scheduled_price_update, 'interval', minutes=30)
@@ -463,7 +462,7 @@ if __name__ == '__main__':
     logger.info("✨ Scheduler started for automatic price updates.")
 
     # For development purposes, run directly
-    # In production, use a WSGI server like Gunicorn or uWSGI
+    # Better to use a WSGI server like Gunicorn or uWSGI
     app.run(host='0.0.0.0', port=5002, debug=True, use_reloader=False) 
     # use_reloader=False is crucial when using APScheduler with Flask's debug mode
     # as it prevents the app from starting twice and thus the scheduler from running twice.
